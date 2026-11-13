@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mercado de Objetos en General</title>
+  <!-- Importamos una fuente moderna de Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Reset básico y box-sizing para evitar que padding y border sumen ancho extra */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', verdana, sans-serif;
+      background-color: #f0f4f8;
+      color: #1e293b;
+      line-height: 1.6;
+    }
+
+    /* Contenedor principal fluido con ancho máximo */
+    #agrupar {
+      max-width: 1100px;
+      width: 95%;
+      margin: 20px auto;
+    }
+
+    /* Cabecera moderna con gradiente vibrante */
+    #cabecera {
+      background: linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%);
+      padding: 35px 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(2, 132, 199, 0.3);
+      text-align: left;
+      color: #ffffff;
+    }
+    #cabecera h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+    #cabecera p {
+      opacity: 0.9;
+      margin-top: 5px;
+      font-size: 1rem;
+    }
+
+    /* Barra de navegación estilo píldora */
+    #menu {
+      background: #ffffff;
+      margin: 20px 0;
+      padding: 10px 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e2e8f0;
+    }
+    #menu ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      list-style: none;
+    }
+    #menu li {
+      padding: 10px 20px;
+      color: #475569;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    #menu li:hover {
+      background-color: #e0f2fe;
+      color: #0284c7;
+    }
+    /* Clase para marcar la pestaña activa */
+    #menu li.activo {
+      background-color: #0284c7;
+      color: #ffffff;
+      box-shadow: 0 4px 10px rgba(2, 132, 199, 0.3);
+    }
+
+    /* Layout principal usando CSS Grid moderno (reemplaza al antiguo float) */
+    .contenido-principal {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 25px;
+      align-items: start;
+    }
+
+    /* Adaptación a móviles y tablets */
+    @media (max-width: 768px) {
+      .contenido-principal {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Clase de utilidad para ocultar/mostrar secciones con JS */
+    .oculto {
+      display: none !important;
+    }
+
+    /* Sección de catálogo */
+    #seccion h2, #vista-vender h2, #vista-contacto h2 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: #0f172a;
+    }
+
+    /* Rejilla de tarjetas de productos */
+    .grid-productos {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    /* Tarjetas de artículo modernas */
+    article {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      padding: 20px;
+      border-radius: 14px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    article:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.08);
+    }
+    article h3 {
+      color: #0f172a;
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+    }
+    article p.descripcion {
+      color: #64748b;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+    }
+    article figure {
+      margin: 10px 0;
+    }
+    article img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    article figcaption {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      margin-top: 6px;
+    }
+    .tarjeta-pie {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 15px;
+      padding-top: 12px;
+      border-top: 1px solid #f1f5f9;
+    }
+    article p.precio {
+      font-weight: 700;
+      color: #0284c7;
+      font-size: 1.25rem;
+    }
+    .btn-comprar {
+      background: #f1f5f9;
+      color: #0f172a;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-comprar:hover {
+      background: #0284c7;
+      color: #ffffff;
+    }
+
+    /* Tarjeta blanca general para Vender y Contacto */
+    .tarjeta-panel {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Formulario estilizado */
+    .grupo-form {
+      margin-bottom: 18px;
+    }
+    .grupo-form label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #334155;
+      font-size: 0.9rem;
+    }
+    .grupo-form input, .grupo-form textarea, .grupo-form select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .grupo-form input:focus, .grupo-form textarea:focus, .grupo-form select:focus {
+      outline: none;
+      border-color: #0284c7;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+    .btn-publicar {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+    .btn-publicar:hover {
+      box-shadow: 0 6px 15px rgba(16, 185, 129, 0.3);
+      transform: translateY(-1px);
+    }
+
+    /* Barra lateral (Aside) */
+    #columna {
+      background: #ffffff;
+      padding: 20px;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+    #columna h3 {
+      color: #0f172a;
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #f1f5f9;
+    }
+    #columna ul {
+      list-style: none;
+    }
+    #columna li {
+      padding: 10px 12px;
+      margin-bottom: 6px;
+      border-radius: 8px;
+      color: #475569;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    #columna li:hover {
+      background: #f1f5f9;
+      color: #0284c7;
+      padding-left: 16px;
+    }
+
+    /* Notificación flotante (reemplaza al molesto alert) */
+    #notificacion {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 14px 22px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      font-weight: 600;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    #notificacion.mostrar {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Pie de página */
+    #pie {
+      text-align: center;
+      padding: 25px;
+      margin-top: 40px;
+      border-top: 1px solid #cbd5e1;
+      color: #64748b;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div id="agrupar">
+    <!-- Cabecera principal -->
+    <header id="cabecera">
+      <h1>Mercado de Objetos en General</h1>
+      <p>Compra y vende artículos de segunda mano de forma rápida y sencilla</p>
+    </header>
+
+    <!-- Barra de navegación interactiva -->
+    <nav id="menu">
+      <ul>
+        <li id="tab-inicio" class="activo" onclick="cambiarVista('inicio')">Inicio / Comprar</li>
+        <li id="tab-vender" onclick="cambiarVista('vender')">+ Vender un Objeto</li>
+        <li id="tab-contacto" onclick="cambiarVista('contacto')">Contacto</li>
+      </ul>
+    </nav>
+
+    <!-- Contenedor principal en Grid -->
+    <div class="contenido-principal">
+      
+      <!-- ZONA IZQUIERDA: Vistas intercambiables -->
+      <main>
+        <!-- VISTA 1: Catálogo de productos (Visible por defecto) -->
+        <section id="seccion">
+          <h2>Catálogo de Objetos Disponibles</h2>
+          
+          <div class="grid-productos" id="lista-productos">
+            <article>
+              <div>
+                <h3>Bicicleta de Montaña</h3>
+                <p class="descripcion">Bicicleta rodada 26 con suspensión delantera, ideal para paseos urbanos o de montaña.</p>
+                <figure>
+                  <img src="https://picsum.photos/id/146/600/400" alt="Bicicleta de Montaña">
+                  <figcaption>Estado: Excelente</figcaption>
+                </figure>
+              </div>
+              <div class="tarjeta-pie">
+                <p class="precio">150 €</p>
+                <button class="btn-comprar" onclick="mostrarAviso('¡Has mostrado interés en la Bicicleta de Montaña!')">Me interesa</button>
+              </div>
+            </article>
+
+            <article>
+              <div>
+                <h3>Cámara Fotográfica Digital</h3>
+                <p class="descripcion">Cámara réflex digital con lente kit 18-55mm, incluye funda protectora y tarjeta de memoria.</p>
+                <figure>
+                  <img src="https://picsum.photos/id/250/600/400" alt="Cámara Fotográfica">
+                  <figcaption>Estado: Como nueva</figcaption>
+                </figure>
+              </div>
+              <div class="tarjeta-pie">
+                <p class="precio">280 €</p>
+                <button class="btn-comprar" onclick="mostrarAviso('¡Has mostrado interés en la Cámara Fotográfica!')">Me interesa</button>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- VISTA 2: Apartado VENDER (Oculto por defecto hasta pulsar en "Vender") -->
+        <section id="vista-vender" class="tarjeta-panel oculto">
+          <h2>Publicar un Objeto a la Venta</h2>
+          <p style="color: #64748b; margin-bottom: 20px;">Rellena los datos de tu artículo y aparecerá al instante en el catálogo.</p>
+          
+          <form id="form-publicar">
+            <div class="grupo-form">
+              <label for="titulo">Nombre del Objeto:</label>
+              <input type="text" id="titulo" name="titulo" placeholder="Ej. Consola Retro, Patinete Eléctrico..." required>
+            </div>
+
+            <div class="grupo-form">
+              <label for="descripcion">Descripción breve:</label>
+              <textarea id="descripcion" name="descripcion" rows="3" placeholder="Describe el estado del producto, accesorios incluidos..." required></textarea>
+            </div>
+            
+            <div class="grupo-form">
+              <label for="precio">Precio (€):</label>
+              <input type="number" id="precio" name="precio" min="1" placeholder="Ej. 50" required>
+            </div>
+            
+            <div class="grupo-form">
+              <label for="correo">Correo de Contacto:</label>
+              <input type="email" id="correo" name="correo" placeholder="vendedor@ejemplo.com" required>
+            </div>
+            
+            <button type="submit" class="btn-publicar">Publicar Objeto en el Catálogo</button>
+          </form>
+        </section>
+
+        <!-- VISTA 3: Apartado CONTACTO (Oculto por defecto) -->
+        <section id="vista-contacto" class="tarjeta-panel oculto">
+          <h2>Contacta con Nosotros</h2>
+          <p style="color: #64748b; margin-bottom: 15px;">¿Tienes alguna duda sobre cómo funciona el mercado? Escríbenos:</p>
+          <p><strong>Email de soporte:</strong> ayuda@mercadoobjetos.es</p>
+          <p><strong>Horario de atención:</strong> Lunes a Viernes de 9:00 a 18:00</p>
+        </section>
+      </main>
+
+      <!-- ZONA DERECHA: Barra lateral con categorías -->
+      <aside id="columna">
+        <h3>Categorías</h3>
+        <ul>
+          <li onclick="mostrarAviso('Filtrando por: Deportes')">⚽ Deportes</li>
+          <li onclick="mostrarAviso('Filtrando por: Electrónica')">💻 Electrónica</li>
+          <li onclick="mostrarAviso('Filtrando por: Hogar y Jardín')">🏡 Hogar y Jardín</li>
+          <li onclick="mostrarAviso('Filtrando por: Herramientas')">🛠️ Herramientas</li>
+        </ul>
+      </aside>
+
+    </div>
+
+    <!-- Pie de página -->
+    <footer id="pie">
+      <p>&copy; 2026 Mercado de Objetos en General — Proyecto Web HTML5, CSS3 y JS</p>
+    </footer>
+  </div>
+
+  <!-- Caja de notificación flotante -->
+  <div id="notificacion">Mensaje</div>
+
+  <!-- Lógica en JavaScript para las pestañas y añadir productos -->
+  <script>
+    // 1. Función para cambiar entre pestañas (Inicio, Vender, Contacto)
+    function cambiarVista(vista) {
+      // Referencias a las secciones
+      const secInicio = document.getElementById('seccion');
+      const secVender = document.getElementById('vista-vender');
+      const secContacto = document.getElementById('vista-contacto');
+
+      // Referencias a los botones del menú
+      const tabInicio = document.getElementById('tab-inicio');
+      const tabVender = document.getElementById('tab-vender');
+      const tabContacto = document.getElementById('tab-contacto');
+
+      // Ocultamos todas las secciones añadiendo la clase 'oculto'
+      secInicio.classList.add('oculto');
+      secVender.classList.add('oculto');
+      secContacto.classList.add('oculto');
+
+      // Quitamos la clase 'activo' de todas las pestañas
+      tabInicio.classList.remove('activo');
+      tabVender.classList.remove('activo');
+      tabContacto.classList.remove('activo');
+
+      // Mostramos solo la elegida y activamos su pestaña
+      if (vista === 'inicio') {
+        secInicio.classList.remove('oculto');
+        tabInicio.classList.add('activo');
+      } else if (vista === 'vender') {
+        secVender.classList.remove('oculto');
+        tabVender.classList.add('activo');
+      } else if (vista === 'contacto') {
+        secContacto.classList.remove('oculto');
+        tabContacto.classList.add('activo');
+      }
+    }
+
+    // 2. Función para mostrar notificaciones elegantes sin usar alert()
+    function mostrarAviso(texto) {
+      const notif = document.getElementById('notificacion');
+      notif.textContent = texto;
+      notif.classList.add('mostrar');
+
+      setTimeout(() => {
+        notif.classList.remove('mostrar');
+      }, 3000);
+    }
+
+    // 3. Capturar el envío del formulario para añadir el objeto al catálogo
+    document.getElementById('form-publicar').addEventListener('submit', function(evento) {
+      // Evitamos que la página se recargue
+      evento.preventDefault();
+
+      // Obtenemos los valores escritos por el usuario
+      const titulo = document.getElementById('titulo').value;
+      const descripcion = document.getElementById('descripcion').value;
+      const precio = document.getElementById('precio').value;
+      const correo = document.getElementById('correo').value;
+
+      // Creamos un nuevo elemento <article> en el DOM
+      const nuevoArticulo = document.createElement('article');
+      // Generamos un número aleatorio para obtener una foto distinta de Picsum
+      const fotoId = Math.floor(Math.random() * 100) + 10;
+
+      nuevoArticulo.innerHTML = `
+        <div>
+          <h3>${titulo}</h3>
+          <p class="descripcion">${descripcion}</p>
+          <figure>
+            <img src="https://picsum.photos/id/${fotoId}/600/400" alt="${titulo}">
+            <figcaption>Contacto: ${correo}</figcaption>
+          </figure>
+        </div>
+        <div class="tarjeta-pie">
+          <p class="precio">${precio} €</p>
+          <button class="btn-comprar" onclick="mostrarAviso('Contacta con ${correo}')">Me interesa</button>
+        </div>
+      `;
+
+      // Añadimos el nuevo artículo al principio del catálogo
+      const listaProductos = document.getElementById('lista-productos');
+      listaProductos.prepend(nuevoArticulo);
+
+      // Limpiamos el formulario
+      this.reset();
+
+      // Volvemos automáticamente a la pestaña de Inicio para ver el objeto publicado
+      cambiarVista('inicio');
+      mostrarAviso('¡Objeto publicado con éxito en el catálogo!');
+    });
+  </script>
+</body>
+</html>
